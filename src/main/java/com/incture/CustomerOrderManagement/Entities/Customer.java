@@ -1,11 +1,17 @@
 package com.incture.CustomerOrderManagement.Entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
@@ -39,6 +45,10 @@ public class Customer
 	
 	@Column
 	private String country;
+	
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonBackReference
+	private List<Feedback> feedbackList;
 
 	public Long getCustomerId() {
 		return customerId;
@@ -112,8 +122,16 @@ public class Customer
 		this.country = country;
 	}
 
+	public List<Feedback> getFeedbackList() {
+		return feedbackList;
+	}
+
+	public void setFeedbackList(List<Feedback> feedbackList) {
+		this.feedbackList = feedbackList;
+	}
+
 	public Customer(Long customerId, String customerName, String email, String phoneNumber, String address, String city,
-			Integer pinCode, String state, String country) {
+			Integer pinCode, String state, String country, List<Feedback> feedbackList) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
@@ -124,6 +142,7 @@ public class Customer
 		this.pinCode = pinCode;
 		this.state = state;
 		this.country = country;
+		this.feedbackList = feedbackList;
 	}
 
 	public Customer() {
@@ -134,7 +153,7 @@ public class Customer
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", email=" + email
 				+ ", phoneNumber=" + phoneNumber + ", address=" + address + ", city=" + city + ", pinCode=" + pinCode
-				+ ", state=" + state + ", country=" + country + "]";
+				+ ", state=" + state + ", country=" + country + ", feedbackList=" + feedbackList + "]";
 	}
 	
 }
